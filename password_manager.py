@@ -121,3 +121,45 @@ def main():
 
 if __name__ == "__main__":
     main()
+import os # Necessary to check if the file exists before trying to read it
+
+def retrieve_passwords(user):
+    """
+    PURPOSE: This is 'Number 2' - Retrieve Password. 
+    It allows the authorized user to view all data stored in the text file.
+    
+    WHAT SHOULD HAPPEN:
+    1. The system checks if the 'passwords.txt' file actually exists.
+    2. If it exists, it opens the file in 'read' mode ('r').
+    3. It loops through every line in the file and prints it to the screen.
+    4. It records this retrieval action in the activity logs for security tracking.
+    """
+    
+    # Check if the file exists to avoid a program crash
+    if not os.path.exists("passwords.txt"):
+        print("\n[!] Error: No password file found. Please add a password first (Option 1).")
+        return
+
+    print("\n" + "="*40)
+    print(f" SECURESPHERE - STORED DATA FOR: {user} ")
+    print("="*40)
+
+    # Open the file and read its contents line by line
+    try:
+        with open("passwords.txt", "r") as file:
+            content = file.readlines()
+            
+            if not content:
+                print("Your password vault is currently empty.")
+            else:
+                for line in content:
+                    # .strip() removes the extra newline character at the end of each line
+                    print(f"-> {line.strip()}")
+                    
+        # Log this action to ensure 'Collaborative Fidelity' and security auditing
+        log_action(user, "Viewed all stored passwords")
+        
+    except Exception as e:
+        print(f"[X] An error occurred while reading the file: {e}")
+
+    print("="*40)
